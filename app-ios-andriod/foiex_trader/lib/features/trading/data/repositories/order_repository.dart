@@ -133,6 +133,33 @@ class OrderRepository {
     }
   }
 
+  Future<TimeRangeStatistics> getOrderStatistics({
+    DateTime? startTime,
+    DateTime? endTime,
+    String? followId,
+    String? strategyId,
+  }) async {
+    try {
+      final queryParams = {
+        if (startTime != null)
+          'startTime': startTime.toUtc().toIso8601String(),
+        if (endTime != null)
+          'endTime': endTime.toUtc().toIso8601String(),
+        if (followId != null) 'followId': followId,
+        if (strategyId != null) 'strategyId': strategyId,
+      };
+
+      final response = await _apiService.get(
+        '/orders/statistics',
+        queryParameters: queryParams,
+      );
+
+      return TimeRangeStatistics.fromJson(response.data);
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
   Stream<Order>? subscribeToOrder(String orderId) {
     final topic = 'order.$orderId';
     _wsService.subscribe(topic);

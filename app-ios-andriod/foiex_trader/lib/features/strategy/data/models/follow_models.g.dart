@@ -58,8 +58,9 @@ Map<String, dynamic> _$$FollowStatusImplToJson(_$FollowStatusImpl instance) =>
       'todayProfitPercent': instance.todayProfitPercent,
       'maxDrawdown': instance.maxDrawdown,
       'maxDrawdownPercent': instance.maxDrawdownPercent,
-      'performanceData': instance.performanceData,
-      'tradeHistory': instance.tradeHistory,
+      'performanceData':
+          instance.performanceData.map((e) => e.toJson()).toList(),
+      'tradeHistory': instance.tradeHistory.map((e) => e.toJson()).toList(),
     };
 
 _$PerformanceDataImpl _$$PerformanceDataImplFromJson(

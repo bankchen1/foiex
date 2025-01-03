@@ -4,14 +4,39 @@ import 'package:fl_chart/fl_chart.dart';
 import '../../data/models/order_models.dart';
 import '../providers/order_provider.dart';
 import '../widgets/profit_chart.dart';
+import '../widgets/order_statistics_widget.dart';
+import '../widgets/time_range_selector.dart';
 
-class OrderDetailScreen extends StatelessWidget {
+class OrderDetailScreen extends StatefulWidget {
   final String orderId;
 
   const OrderDetailScreen({
     Key? key,
     required this.orderId,
   }) : super(key: key);
+
+  @override
+  State<OrderDetailScreen> createState() => _OrderDetailScreenState();
+}
+
+class _OrderDetailScreenState extends State<OrderDetailScreen> {
+  late TimeRange _selectedTimeRange;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedTimeRange = TimeRangeSelector.predefinedRanges[1]; // 30天
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadStatistics();
+    });
+  }
+
+  void _loadStatistics() {
+    context.read<OrderProvider>().loadOrderStatistics(
+          startTime: _selectedTimeRange.startTime,
+          endTime: _selectedTimeRange.endTime,
+        );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,20 +47,27 @@ class OrderDetailScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: () {
-              context.read<OrderProvider>().refreshOrder(orderId);
+              context.read<OrderProvider>().refreshOrder(widget.orderId);
+              _loadStatistics();
             },
           ),
         ],
       ),
       body: Consumer<OrderProvider>(
         builder: (context, orderProvider, child) {
-          final order = orderProvider.getOrder(orderId);
+          final order = orderProvider.getOrder(widget.orderId);
           if (order == null) {
             return const Center(child: CircularProgressIndicator());
           }
 
           return RefreshIndicator(
-            onRefresh: () => orderProvider.refreshOrder(orderId),
+            onRefresh: () async {
+              await orderProvider.refreshOrder(widget.orderId);
+              await orderProvider.loadOrderStatistics(
+                startTime: _selectedTimeRange.startTime,
+                endTime: _selectedTimeRange.endTime,
+              );
+            },
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
               child: Padding(
@@ -46,6 +78,18 @@ class OrderDetailScreen extends StatelessWidget {
                     _buildOrderStatusCard(context, order),
                     const SizedBox(height: 24),
                     _buildProfitSection(context, order),
+                    const SizedBox(height: 24),
+                    TimeRangeSelector(
+                      selectedRange: _selectedTimeRange,
+                      onRangeChanged: (range) {
+                        setState(() {
+                          _selectedTimeRange = range;
+                          _loadStatistics();
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    _buildStatisticsSection(context, order),
                     const SizedBox(height: 24),
                     _buildDetailsSection(context, order),
                     const SizedBox(height: 24),
@@ -58,6 +102,28 @@ class OrderDetailScreen extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+
+  Widget _buildStatisticsSection(BuildContext context, Order order) {
+    return Consumer<OrderProvider>(
+      builder: (context, provider, child) {
+        if (provider.isLoadingStats) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        final stats = provider.statistics;
+        if (stats == null) {
+          return const Center(
+            child: Text('No statistics available'),
+          );
+        }
+
+        return OrderStatisticsWidget(
+          statistics: stats.statistics,
+          dailyStats: stats.dailyStats,
+        );
+      },
     );
   }
 
@@ -167,7 +233,7 @@ class OrderDetailScreen extends StatelessWidget {
         SizedBox(
           height: 200,
           child: ProfitChart(
-            orderId: orderId,
+            orderId: widget.orderId,
             data: order.profitHistory,
           ),
         ),
@@ -354,7 +420,7 @@ class OrderDetailScreen extends StatelessWidget {
     if (result == true && context.mounted) {
       try {
         await context.read<OrderProvider>().modifyOrder(
-              orderId,
+              widget.orderId,
               ModifyOrderRequest(
                 stopLoss: stopLoss,
                 takeProfit: takeProfit,
@@ -408,7 +474,7 @@ class OrderDetailScreen extends StatelessWidget {
 
     if (confirmed == true && context.mounted) {
       try {
-        await context.read<OrderProvider>().closeOrder(orderId);
+        await context.read<OrderProvider>().closeOrder(widget.orderId);
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(

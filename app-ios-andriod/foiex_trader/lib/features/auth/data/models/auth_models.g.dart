@@ -43,7 +43,7 @@ _$AuthResponseImpl _$$AuthResponseImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$AuthResponseImplToJson(_$AuthResponseImpl instance) =>
     <String, dynamic>{
       'token': instance.token,
-      'user': instance.user,
+      'user': instance.user.toJson(),
     };
 
 _$UserProfileImpl _$$UserProfileImplFromJson(Map<String, dynamic> json) =>

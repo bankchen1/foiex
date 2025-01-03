@@ -41,7 +41,7 @@ Map<String, dynamic> _$$StrategyImplToJson(_$StrategyImpl instance) =>
       'maxDrawdown': instance.maxDrawdown,
       'followersCount': instance.followersCount,
       'tradingPairs': instance.tradingPairs,
-      'recentTrades': instance.recentTrades,
+      'recentTrades': instance.recentTrades.map((e) => e.toJson()).toList(),
       'isFollowing': instance.isFollowing,
       'creatorId': instance.creatorId,
       'creatorName': instance.creatorName,
@@ -93,7 +93,7 @@ Map<String, dynamic> _$$StrategyPerformanceImplToJson(
         _$StrategyPerformanceImpl instance) =>
     <String, dynamic>{
       'strategyId': instance.strategyId,
-      'points': instance.points,
+      'points': instance.points.map((e) => e.toJson()).toList(),
       'totalReturn': instance.totalReturn,
       'monthlyReturn': instance.monthlyReturn,
       'sharpeRatio': instance.sharpeRatio,

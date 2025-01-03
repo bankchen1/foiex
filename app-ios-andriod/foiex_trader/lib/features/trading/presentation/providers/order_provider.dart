@@ -12,6 +12,8 @@ class OrderProvider with ChangeNotifier {
   bool _isLoadingHistory = false;
   bool _hasMoreHistory = true;
   int _currentHistoryPage = 1;
+  TimeRangeStatistics? _statistics;
+  bool _isLoadingStats = false;
 
   OrderProvider(this._repository);
 
@@ -20,6 +22,8 @@ class OrderProvider with ChangeNotifier {
   bool get hasMoreHistory => _hasMoreHistory;
   List<Order> get openOrders => _openOrders.values.toList();
   List<OrderHistory> get orderHistory => _orderHistory;
+  TimeRangeStatistics? get statistics => _statistics;
+  bool get isLoadingStats => _isLoadingStats;
 
   Order? getOrder(String orderId) => _openOrders[orderId];
 
@@ -148,6 +152,32 @@ class OrderProvider with ChangeNotifier {
     _subscriptions[orderId]?.cancel();
     _subscriptions.remove(orderId);
     _repository.unsubscribeFromOrder(orderId);
+  }
+
+  Future<void> loadOrderStatistics({
+    DateTime? startTime,
+    DateTime? endTime,
+    String? followId,
+    String? strategyId,
+  }) async {
+    if (_isLoadingStats) return;
+    _isLoadingStats = true;
+    notifyListeners();
+
+    try {
+      _statistics = await _repository.getOrderStatistics(
+        startTime: startTime,
+        endTime: endTime,
+        followId: followId,
+        strategyId: strategyId,
+      );
+    } catch (e) {
+      print('Error loading order statistics: $e');
+      rethrow;
+    } finally {
+      _isLoadingStats = false;
+      notifyListeners();
+    }
   }
 
   @override
