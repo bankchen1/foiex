@@ -30,6 +30,9 @@ yarn-error.log*
 *.sln
 *.sw?
 
+# GitHub token
+.github-token
+
 # OS generated files
 .DS_Store
 .DS_Store?
