@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="252px" height="294px" viewBox="0 0 252 294" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g transform="translate(-187.000000, -147.000000)">
+            <g transform="translate(187.000000, 147.000000)">
+                <path d="M126,292 C195.588745,292 252,235.588745 252,166 C252,96.4112546 195.588745,40 126,40 C56.4112546,40 0,96.4112546 0,166 C0,235.588745 56.4112546,292 126,292 Z" fill="#F5F7FA"></path>
+                <path d="M126,274 C185.647059,274 234,225.647059 234,166 C234,106.352941 185.647059,58 126,58 C66.3529412,58 18,106.352941 18,166 C18,225.647059 66.3529412,274 126,274 Z" fill="#E4E7EB"></path>
+                <path d="M126,0 C57.307925,0 1.42108547e-14,57.307925 1.42108547e-14,126 L1.42108547e-14,166 C1.42108547e-14,235.588745 56.4112546,292 126,292 C195.588745,292 252,235.588745 252,166 L252,126 C252,57.307925 194.692075,0 126,0 Z" fill-opacity="0.1" fill="#000000"></path>
+                <text font-family="Arial-BoldMT, Arial" font-size="120" font-weight="bold" fill="#1890FF">
+                    <tspan x="62" y="198">404</tspan>
+                </text>
+            </g>
+        </g>
+    </g>
+</svg>
