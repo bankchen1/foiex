@@ -75,8 +75,4 @@ class ProfitChart extends StatelessWidget {
       return FlSpot(index.toDouble(), point.profit);
     });
   }
-
-  String _formatTimestamp(DateTime timestamp) {
-    return '${timestamp.month}/${timestamp.day} ${timestamp.hour}:${timestamp.minute}';
-  }
 }

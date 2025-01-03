@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:logging/logging.dart';
 
 class WebSocketService {
   static const String wsUrl = 'ws://localhost:1212/market';
+  final _logger = Logger('WebSocketService');
   WebSocketChannel? _channel;
   final _subscriptions = <String, StreamController>{};
   bool _isConnected = false;
@@ -24,17 +26,18 @@ class WebSocketService {
           }
         },
         onError: (error) {
-          print('WebSocket Error: $error');
+          _logger.warning('WebSocket Error: $error');
           _isConnected = false;
           reconnect();
         },
         onDone: () {
+          _logger.info('WebSocket connection closed');
           _isConnected = false;
           reconnect();
         },
       );
     } catch (e) {
-      print('WebSocket Connection Error: $e');
+      _logger.severe('WebSocket Connection Error: $e');
       _isConnected = false;
       await Future.delayed(const Duration(seconds: 5));
       reconnect();

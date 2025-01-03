@@ -1,10 +1,13 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
+import 'package:logging/logging.dart';
 import '../../data/models/order_models.dart';
+import '../../data/models/time_range_statistics.dart';
 import '../../data/repositories/order_repository.dart';
 
 class OrderProvider with ChangeNotifier {
   final OrderRepository _repository;
+  final _logger = Logger('OrderProvider');
   final Map<String, Order> _openOrders = {};
   final Map<String, StreamSubscription> _subscriptions = {};
   final List<OrderHistory> _orderHistory = [];
@@ -54,7 +57,7 @@ class OrderProvider with ChangeNotifier {
         subscribeToOrder(order.id);
       }
     } catch (e) {
-      print('Error loading open orders: $e');
+      _logger.severe('Error loading open orders: $e');
     } finally {
       _isLoadingOpen = false;
       notifyListeners();
@@ -95,7 +98,7 @@ class OrderProvider with ChangeNotifier {
         _orderHistory.addAll(orders);
       }
     } catch (e) {
-      print('Error loading order history: $e');
+      _logger.severe('Error loading order history: $e');
     } finally {
       _isLoadingHistory = false;
       notifyListeners();
@@ -108,7 +111,7 @@ class OrderProvider with ChangeNotifier {
       _openOrders[orderId] = order;
       notifyListeners();
     } catch (e) {
-      print('Error refreshing order: $e');
+      _logger.severe('Error refreshing order: $e');
       rethrow;
     }
   }
@@ -120,7 +123,7 @@ class OrderProvider with ChangeNotifier {
       unsubscribeFromOrder(orderId);
       notifyListeners();
     } catch (e) {
-      print('Error closing order: $e');
+      _logger.severe('Error closing order: $e');
       rethrow;
     }
   }
@@ -131,7 +134,7 @@ class OrderProvider with ChangeNotifier {
       _openOrders[orderId] = updatedOrder;
       notifyListeners();
     } catch (e) {
-      print('Error modifying order: $e');
+      _logger.severe('Error modifying order: $e');
       rethrow;
     }
   }
@@ -172,7 +175,7 @@ class OrderProvider with ChangeNotifier {
         strategyId: strategyId,
       );
     } catch (e) {
-      print('Error loading order statistics: $e');
+      _logger.severe('Error loading order statistics: $e');
       rethrow;
     } finally {
       _isLoadingStats = false;

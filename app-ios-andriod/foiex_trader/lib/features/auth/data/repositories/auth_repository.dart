@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import '../../../core/services/api_service.dart';
+import 'package:foiex_trader/core/services/api_service.dart';
 import '../models/auth_models.dart';
 
 class AuthRepository {

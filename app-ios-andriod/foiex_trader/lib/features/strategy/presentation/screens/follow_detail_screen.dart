@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:fl_chart/fl_chart.dart';
 import '../../data/models/follow_models.dart';
 import '../providers/follow_provider.dart';
 import '../widgets/performance_chart.dart';
@@ -353,7 +352,7 @@ class FollowDetailScreen extends StatelessWidget {
               decoration: const InputDecoration(labelText: 'Position Ratio (%)'),
               keyboardType: TextInputType.number,
               controller: TextEditingController(
-                text: (positionRatio * 100).toString(),
+                text: ((positionRatio ?? 1.0) * 100).toString(),
               ),
               onChanged: (value) {
                 final parsed = double.tryParse(value);

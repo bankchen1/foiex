@@ -11,15 +11,14 @@ class FollowStrategyScreen extends StatefulWidget {
       : super(key: key);
 
   @override
-  _FollowStrategyScreenState createState() => _FollowStrategyScreenState();
+  FollowStrategyScreenState createState() => FollowStrategyScreenState();
 }
 
-class _FollowStrategyScreenState extends State<FollowStrategyScreen> {
+class FollowStrategyScreenState extends State<FollowStrategyScreen> {
   final _formKey = GlobalKey<FormState>();
   double _allocation = 1000;
   double _maxLoss = 10;
   double _positionRatio = 100;
-  String? _note;
   bool _isSubmitting = false;
 
   @override
@@ -40,8 +39,6 @@ class _FollowStrategyScreenState extends State<FollowStrategyScreen> {
               _buildAllocationSection(),
               const SizedBox(height: 24),
               _buildRiskControlSection(),
-              const SizedBox(height: 24),
-              _buildNoteSection(),
               const SizedBox(height: 32),
               _buildSubmitButton(),
             ],
@@ -192,29 +189,6 @@ class _FollowStrategyScreenState extends State<FollowStrategyScreen> {
     );
   }
 
-  Widget _buildNoteSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Note',
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-        const SizedBox(height: 8),
-        TextFormField(
-          maxLines: 3,
-          decoration: const InputDecoration(
-            hintText: 'Add a note (optional)',
-            border: OutlineInputBorder(),
-          ),
-          onSaved: (value) {
-            _note = value;
-          },
-        ),
-      ],
-    );
-  }
-
   Widget _buildSubmitButton() {
     return SizedBox(
       width: double.infinity,
@@ -244,7 +218,6 @@ class _FollowStrategyScreenState extends State<FollowStrategyScreen> {
         allocation: _allocation,
         maxLoss: _maxLoss,
         positionRatio: _positionRatio,
-        note: _note,
       );
 
       await context.read<FollowProvider>().followStrategy(request);

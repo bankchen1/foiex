@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
-import '../../../core/services/api_service.dart';
-import '../../../core/services/websocket_service.dart';
+import 'package:foiex_trader/core/services/api_service.dart';
+import 'package:foiex_trader/core/services/websocket_service.dart';
 import '../models/order_models.dart';
+import '../models/time_range_statistics.dart';
 
 class OrderRepository {
   final ApiService _apiService;

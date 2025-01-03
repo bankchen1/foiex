@@ -105,7 +105,7 @@ class FollowStatusCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    followStatus.strategy?.name ?? 'Strategy',
+                    'Strategy ${followStatus.strategyId}',
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -116,7 +116,7 @@ class FollowStatusCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            if (stats != null && stats.performancePoints.isNotEmpty)
+            if (followStatus.performanceData.isNotEmpty)
               SizedBox(
                 height: 100,
                 child: LineChart(
@@ -126,13 +126,13 @@ class FollowStatusCard extends StatelessWidget {
                     borderData: FlBorderData(show: false),
                     lineBarsData: [
                       LineChartBarData(
-                        spots: stats.performancePoints
+                        spots: followStatus.performanceData
                             .asMap()
                             .entries
                             .map((entry) {
                               return FlSpot(
                                 entry.key.toDouble(),
-                                entry.value.value,
+                                entry.value.profit,
                               );
                             })
                             .toList(),

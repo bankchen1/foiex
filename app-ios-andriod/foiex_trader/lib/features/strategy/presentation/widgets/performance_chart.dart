@@ -1,8 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../../data/models/follow_models.dart';
-import '../providers/follow_provider.dart';
 
 class PerformanceChart extends StatelessWidget {
   final String followId;
@@ -35,13 +33,13 @@ class PerformanceChart extends StatelessWidget {
           verticalInterval: 1,
           getDrawingHorizontalLine: (value) {
             return FlLine(
-              color: Colors.grey[300],
+              color: Colors.grey[300]!,
               strokeWidth: 1,
             );
           },
           getDrawingVerticalLine: (value) {
             return FlLine(
-              color: Colors.grey[300],
+              color: Colors.grey[300]!,
               strokeWidth: 1,
             );
           },

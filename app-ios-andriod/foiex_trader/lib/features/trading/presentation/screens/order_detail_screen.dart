@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:fl_chart/fl_chart.dart';
 import '../../data/models/order_models.dart';
 import '../providers/order_provider.dart';
-import '../widgets/profit_chart.dart';
 import '../widgets/order_statistics_widget.dart';
 import '../widgets/time_range_selector.dart';
+import '../widgets/profit_chart.dart';
 
 class OrderDetailScreen extends StatefulWidget {
   final String orderId;
@@ -120,8 +119,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
         }
 
         return OrderStatisticsWidget(
-          statistics: stats.statistics,
-          dailyStats: stats.dailyStats,
+          statistics: stats,
         );
       },
     );
@@ -226,15 +224,15 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Profit/Loss Chart',
-          style: Theme.of(context).textTheme.titleLarge,
+          'Profit Chart',
+          style: Theme.of(context).textTheme.titleMedium,
         ),
         const SizedBox(height: 16),
         SizedBox(
           height: 200,
           child: ProfitChart(
-            orderId: widget.orderId,
-            data: order.profitHistory,
+            profitPoints: order.profitPoints,
+            color: order.profit >= 0 ? Colors.green : Colors.red,
           ),
         ),
       ],

@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import '../../../core/services/api_service.dart';
-import '../../../core/services/websocket_service.dart';
+import 'package:foiex_trader/core/services/api_service.dart';
+import 'package:foiex_trader/core/services/websocket_service.dart';
 import '../models/market_models.dart';
 
 class MarketRepository {

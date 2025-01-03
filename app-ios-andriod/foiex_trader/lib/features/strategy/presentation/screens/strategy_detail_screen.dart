@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../providers/strategy_provider.dart';
 import '../../data/models/strategy_models.dart';
+import 'follow_strategy_screen.dart';
 
 class StrategyDetailScreen extends StatefulWidget {
   final Strategy strategy;
